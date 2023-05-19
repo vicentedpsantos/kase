@@ -14,12 +14,19 @@ defmodule Kase.Identifier do
   @empty " "
 
   @forbidden_for_camel_case [@empty, @dash, @underscore]
+  @forbidden_for_kebab_case [@empty, @underscore]
 
-  @spec is_camel_case?(String.t()) :: boolean()
-  def is_camel_case?(input) do
+  @spec camel_case?(String.t()) :: boolean()
+  def camel_case?(input) do
     downcase?(String.first(input)) &&
       !contains_forbidden_characters?(input, @forbidden_for_camel_case) &&
       at_least_one_upcase_letter?(input)
+  end
+
+  @spec kebab_case?(String.t()) :: boolean()
+  def kebab_case?(input) do
+    !contains_forbidden_characters?(input, @forbidden_for_kebab_case) &&
+      at_least_one_of?(input, @dash)
   end
 
   @spec contains_forbidden_characters?(String.t(), [String.t()]) :: boolean()
@@ -40,5 +47,12 @@ defmodule Kase.Identifier do
     input
     |> String.split("", trim: true)
     |> Enum.any?(&upcase?(&1))
+  end
+
+  @spec at_least_one_of?(String.t(), String.t()) :: boolean()
+  defp at_least_one_of?(input, symbol) do
+    input
+    |> String.split("", trim: true)
+    |> Enum.any?(&(&1 == symbol))
   end
 end
