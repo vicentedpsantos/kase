@@ -45,6 +45,8 @@ defmodule Kase do
       :train_case -> from_dot_case_to_train_case(dot_cased_string)
       :cobol_case -> from_dot_case_to_cobol_case(dot_cased_string)
       :humanized_case -> from_dot_case_to_humanized_case(dot_cased_string)
+      # Added this line for dot_case conversion
+      :dot_case -> dot_cased_string
       _ -> string
     end
   end
@@ -130,13 +132,13 @@ defmodule Kase do
 
   defp split_words(string) do
     string
-    # Split between lower and upper case
+    # Split lower to upper case
     |> String.replace(~r/([a-z])([A-Z])/, "\\1 \\2")
-    # Split between two uppercase letters followed by a lowercase
+    # Split consecutive uppercase
     |> String.replace(~r/([A-Z])([A-Z][a-z])/, "\\1 \\2")
-    # Replace underscores, dashes, dots, and spaces with a single space
+    # Replace other separators
     |> String.replace(~r/[_\-\.\s]+/, " ")
-    # Split the string into words
+    # Split into words
     |> String.split(" ", trim: true)
   end
 end
