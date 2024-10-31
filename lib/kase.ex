@@ -3,12 +3,12 @@ defmodule Kase do
   A module for converting strings between different casing styles.
   """
 
+  alias Kase.Conversor
+
   @doc """
   Converts a given `string` to the specified `target_case`.
 
   ## Examples
-      iex> Kase.convert("THIS-IS-COBOL-CASE", :humanized_case)
-      "This is cobol case"
 
       iex> Kase.convert("this-variable-name", :camel_case)
       "thisVariableName"
@@ -16,129 +16,29 @@ defmodule Kase do
       iex> Kase.convert("ThisIsPascalCase", :snake_case)
       "this_is_pascal_case"
 
-      iex> Kase.convert("snake_case_var", :kebab_case)
-      "snake-case-var"
+      map_input = %{"first_key" => "value", "second_key" => "value"}
+      iex> Kase.convert(map_input, :camel_case)
+      %{"firstKey" => "value", "secondKey" => "value"}
 
-      iex> Kase.convert("PascalCaseVar", :upper_case_snake_case)
-      "PASCAL_CASE_VAR"
-
-      iex> Kase.convert("this-is-an-example", :train_case)
-      "This-Is-An-Example"
-
-      iex> Kase.convert("this_is_cobol_case", :cobol_case)
-      "THIS-IS-COBOL-CASE"
-
-      iex> Kase.convert("exampleForDotCase", :dot_case)
-      "example.for.dot.case"
   """
 
-  @spec convert(String.t(), atom()) :: String.t()
-  def convert(string, target_case) do
-    dot_cased_string = to_dot_case(string)
+  @spec convert(String.t() | map(), atom()) :: String.t()
+  def convert(string, target_case) when is_binary(string),
+    do: Conversor.convert(string, target_case)
 
-    case target_case do
-      :camel_case -> from_dot_case_to_camel_case(dot_cased_string)
-      :snake_case -> from_dot_case_to_snake_case(dot_cased_string)
-      :kebab_case -> from_dot_case_to_kebab_case(dot_cased_string)
-      :pascal_case -> from_dot_case_to_pascal_case(dot_cased_string)
-      :upper_case_snake_case -> from_dot_case_to_upper_case_snake_case(dot_cased_string)
-      :train_case -> from_dot_case_to_train_case(dot_cased_string)
-      :cobol_case -> from_dot_case_to_cobol_case(dot_cased_string)
-      :humanized_case -> from_dot_case_to_humanized_case(dot_cased_string)
-      # Added this line for dot_case conversion
-      :dot_case -> dot_cased_string
-      _ -> string
-    end
-  end
+  @spec convert(map(), atom(), Keyword.t()) :: map()
+  def convert(%{} = map, target_case, options \\ []) do
+    to_atoms = Keyword.get(options, :to_atoms, false)
 
-  @spec to_dot_case(String.t()) :: String.t()
-  defp to_dot_case(string) do
-    string
-    |> split_words()
-    |> Enum.map(&String.downcase/1)
-    |> Enum.join(".")
-  end
+    map
+    |> Map.new(fn {key, value} ->
+      new_key = Conversor.convert(to_string(key), target_case)
 
-  @spec from_dot_case_to_camel_case(String.t()) :: String.t()
-  defp from_dot_case_to_camel_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.with_index()
-    |> Enum.map(fn
-      # First word is lowercase
-      {word, 0} -> String.downcase(word)
-      # Subsequent words are capitalized
-      {word, _index} -> String.capitalize(word)
+      if to_atoms do
+        {String.to_atom(new_key), value}
+      else
+        {new_key, value}
+      end
     end)
-    |> Enum.join()
-  end
-
-  @spec from_dot_case_to_snake_case(String.t()) :: String.t()
-  defp from_dot_case_to_snake_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.downcase/1)
-    |> Enum.join("_")
-  end
-
-  @spec from_dot_case_to_kebab_case(String.t()) :: String.t()
-  defp from_dot_case_to_kebab_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.downcase/1)
-    |> Enum.join("-")
-  end
-
-  @spec from_dot_case_to_pascal_case(String.t()) :: String.t()
-  defp from_dot_case_to_pascal_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join()
-  end
-
-  @spec from_dot_case_to_upper_case_snake_case(String.t()) :: String.t()
-  defp from_dot_case_to_upper_case_snake_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.upcase/1)
-    |> Enum.join("_")
-  end
-
-  @spec from_dot_case_to_train_case(String.t()) :: String.t()
-  defp from_dot_case_to_train_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join("-")
-  end
-
-  @spec from_dot_case_to_cobol_case(String.t()) :: String.t()
-  defp from_dot_case_to_cobol_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.upcase/1)
-    |> Enum.join("-")
-  end
-
-  @spec from_dot_case_to_humanized_case(String.t()) :: String.t()
-  defp from_dot_case_to_humanized_case(string) do
-    string
-    |> String.split(".")
-    |> Enum.map(&String.downcase/1)
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
-  end
-
-  defp split_words(string) do
-    string
-    # Split lower to upper case
-    |> String.replace(~r/([a-z])([A-Z])/, "\\1 \\2")
-    # Split consecutive uppercase
-    |> String.replace(~r/([A-Z])([A-Z][a-z])/, "\\1 \\2")
-    # Replace other separators
-    |> String.replace(~r/[_\-\.\s]+/, " ")
-    # Split into words
-    |> String.split(" ", trim: true)
   end
 end

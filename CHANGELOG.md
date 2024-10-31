@@ -9,6 +9,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Update README.
 - Add CHANGELOG.md.
+- Support converting map keys.
 
 ## [0.1.1] - 2024-10-11
 
