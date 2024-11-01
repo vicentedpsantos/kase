@@ -7,15 +7,21 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.0] - 2024-10-11
+
+### Changed
 - Update README.
 - Add CHANGELOG.md.
 - Support converting map keys.
+
+### Added
+
+- Add CHANGELOG.md.
+- Add support converting map keys.
+
 
 ## [0.1.1] - 2024-10-11
 
 ### Added
 
 - Add case converting functions.
-
-[Unreleased]: https://github.com/vicentedpsantos/kase/compare/0.0.0...HEAD
-[0.0.0]: https://github.com/vicentedpsantos/kase/releases/tag/0.0.0

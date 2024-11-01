@@ -7,6 +7,7 @@ defmodule Kase.Conversor do
   Converts a given `string` to the specified `target_case`.
 
   ## Examples
+
       iex> Kase.convert("THIS-IS-COBOL-CASE", :humanized_case)
       "This is cobol case"
 
@@ -30,6 +31,7 @@ defmodule Kase.Conversor do
 
       iex> Kase.convert("exampleForDotCase", :dot_case)
       "example.for.dot.case"
+
   """
 
   @spec convert(String.t() | map(), atom()) :: String.t()
