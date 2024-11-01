@@ -3,6 +3,18 @@ defmodule Kase.Conversor do
   A module for converting strings between different casing styles.
   """
 
+  @typedoc "The target case to convert the string to."
+  @type target_case ::
+          :camel_case
+          | :cobol_case
+          | :dot_case
+          | :humanized_case
+          | :kebab_case
+          | :pascal_case
+          | :snake_case
+          | :train_case
+          | :upper_case_snake_case
+
   @doc """
   Converts a given `string` to the specified `target_case`.
 
@@ -34,19 +46,19 @@ defmodule Kase.Conversor do
 
   """
 
-  @spec convert(String.t() | map(), atom()) :: String.t()
+  @spec convert(String.t() | map(), target_case()) :: String.t()
   def convert(string, target_case) when is_binary(string) do
     dot_cased_string = to_dot_case(string)
 
     case target_case do
       :camel_case -> from_dot_case_to_camel_case(dot_cased_string)
-      :snake_case -> from_dot_case_to_snake_case(dot_cased_string)
-      :kebab_case -> from_dot_case_to_kebab_case(dot_cased_string)
-      :pascal_case -> from_dot_case_to_pascal_case(dot_cased_string)
-      :upper_case_snake_case -> from_dot_case_to_upper_case_snake_case(dot_cased_string)
-      :train_case -> from_dot_case_to_train_case(dot_cased_string)
       :cobol_case -> from_dot_case_to_cobol_case(dot_cased_string)
       :humanized_case -> from_dot_case_to_humanized_case(dot_cased_string)
+      :kebab_case -> from_dot_case_to_kebab_case(dot_cased_string)
+      :pascal_case -> from_dot_case_to_pascal_case(dot_cased_string)
+      :snake_case -> from_dot_case_to_snake_case(dot_cased_string)
+      :train_case -> from_dot_case_to_train_case(dot_cased_string)
+      :upper_case_snake_case -> from_dot_case_to_upper_case_snake_case(dot_cased_string)
       # Added this line for dot_case conversion
       :dot_case -> dot_cased_string
       _ -> string

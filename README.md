@@ -11,7 +11,7 @@ To use Käse in your Elixir project, add it to your `mix.exs` file:
 ```elixir
 defp deps do
   [
-    {:kase, "~> 0.1.0"}
+    {:kase, "~> 0.2.0"}
   ]
 end
 ```
