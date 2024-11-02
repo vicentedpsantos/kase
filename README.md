@@ -101,6 +101,13 @@ Kase.convert("this_is_an_example", :humanized_case)
 # => "This is an example"
 ```
 
+### Convert to flat case
+
+```elixir
+Kase.convert("this_is_an_example", :flat_case)
+# => "thisisanexample"
+```
+
 ### Convert Map Keys
 You can also convert the keys of a map to a desired casing style using Kase.convert/3. This function accepts an optional :to_atoms option to convert the keys into atoms if desired.
 
@@ -114,7 +121,7 @@ Kase.convert(original_map, :kebab_case)
 #### Convert with keys as atoms
 ```elixir
 Kase.convert(original_map, :kebab_case, to_atoms: true)
-# => %{:first_name => "John", :last_name => "Doe"}
+# => %{"first-name": "John", "last-name": "Doe"}
 ```
 
 

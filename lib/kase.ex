@@ -22,7 +22,7 @@ defmodule Kase do
 
   """
 
-  @spec convert(String.t() | map(), atom()) :: String.t()
+  @spec convert(String.t(), atom()) :: String.t()
   def convert(string, target_case) when is_binary(string),
     do: Conversor.convert(string, target_case)
 

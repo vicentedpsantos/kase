@@ -45,6 +45,9 @@ defmodule Kase.Conversor do
       iex> Kase.convert("exampleForDotCase", :dot_case)
       "example.for.dot.case"
 
+      iex> Kase.convert("example.for.flat.case", :flat_case)
+      "exampleforflatcase"
+
   ## Supported target cases
 
   - `:camel_case`
