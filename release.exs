@@ -1,10 +1,6 @@
 #!/usr/bin/env elixir
 
 defmodule Release do
-  # -------------------------------------------
-  # Common variables
-  # -------------------------------------------
-
   @version_file "mix.exs"
   @changelog_file "CHANGELOG.md"
   @readme_file "README.md"
@@ -48,7 +44,9 @@ defmodule Release do
     IO.puts("\tRecording changes to the repository")
     create_git_commit_and_tag(new_version)
 
-    IO.puts("\nIf everything's ok, push the changes to upstream!")
+    IO.puts(
+      "\nIf everything's ok, push the changes. \n\n \"git push origin master && git push origin --tags\""
+    )
   end
 
   defp get_current_version do
