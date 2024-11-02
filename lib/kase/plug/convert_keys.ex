@@ -112,7 +112,12 @@ defmodule Kase.Plug.ConvertKeys do
   defp convert_response_keys(%{resp_body: body, resp_headers: headers} = conn, response_casing)
        when response_casing in @supported_casing_styles do
     if json_response?(headers) do
-      converted_body = body |> Jason.decode!() |> Kase.convert(response_casing) |> Jason.encode!()
+      converted_body =
+        body
+        |> Jason.decode!()
+        |> Kase.convert(response_casing)
+        |> Jason.encode!()
+
       put_resp_content_type(conn, "application/json")
       %{conn | resp_body: converted_body}
     else

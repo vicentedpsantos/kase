@@ -1,6 +1,74 @@
 defmodule Kase do
   @moduledoc """
-  A module for converting strings between different casing styles.
+  A module for converting strings and map keys between various casing styles.
+
+  Käse simplifies the process of converting strings and map keys to different
+  casing formats, such as camelCase, snake_case, kebab-case, and more. This is
+  especially useful when working with APIs or data transformations, where consistent
+  casing is important.
+
+  ## Features
+
+    - Convert strings to a specified casing style.
+    - Convert lists of strings to a specified casing style.
+    - Convert map keys to a specified casing style, including nested maps.
+    - Case-invariant string comparisons.
+    - Supports a wide variety of casing styles.
+
+  ## Usage
+
+  ### String Conversion
+
+  Convert a single string to a specified casing style:
+
+      iex> Kase.convert("this-variable-name", :camel_case)
+      "thisVariableName"
+
+  Convert a list of strings to a specified casing style:
+
+      iex> Kase.convert(["kool-aid", "royalCrown"], :snake_case)
+      ["kool_aid", "royal_crown"]
+
+  ### Map Key Conversion
+
+  Convert the keys of a map to a specified casing style. This also supports nested
+  maps and the option to convert keys to atoms:
+
+      iex> map_input = %{"first_key" => "value", "second_key" => "value", "nested_value" => %{"inner_key" => "value"}}
+      iex> Kase.convert(map_input, :camel_case)
+      %{"firstKey" => "value", "secondKey" => "value", "nestedValue" => %{"innerKey" => "value"}}
+
+      iex> Kase.convert(map_input, :camel_case, to_atoms: true)
+      %{"firstKey": "value", "secondKey": "value", "nestedValue": %{"innerKey": "value"}}
+
+  ### Case-Invariant Comparison
+
+  Compare two strings for equality, ignoring differences in casing:
+
+      iex> Kase.case_invariant_equal?("helloWorld", "hello_world")
+      true
+
+      iex> Kase.case_invariant_equal?("fooBar", "FOO_BAR")
+      true
+
+  ## Supported Casing Styles
+
+  The following casing styles are supported:
+
+      - `:camel_case` - camelCase
+      - `:cobol_case` - COBOL-CASE
+      - `:dot_case` - dot.case
+      - `:flat_case` - flatcase
+      - `:humanized_case` - Humanized case
+      - `:kebab_case` - kebab-case
+      - `:pascal_case` - PascalCase
+      - `:snake_case` - snake_case
+      - `:train_case` - Train-Case
+      - `:upper_case_snake_case` - UPPER_CASE_SNAKE_CASE
+
+  For any custom conversions or additional casing styles, the `Kase.Conversor`
+  module can be extended to handle these cases.
+
   """
 
   alias Kase.Conversor
@@ -26,7 +94,7 @@ defmodule Kase do
       iex> Kase.convert("this-variable-name", :camel_case)
       "thisVariableName"
 
-      iex> Kase.convert(["kool-aid, "royalCrown"], :snake_case)
+      iex> Kase.convert(["kool-aid", "royalCrown"], :snake_case)
       ["kool_aid", "royal_crown"]
 
   """
