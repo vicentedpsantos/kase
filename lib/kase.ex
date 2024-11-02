@@ -5,6 +5,19 @@ defmodule Kase do
 
   alias Kase.Conversor
 
+  @typedoc "The target case to convert the string to."
+  @type target_case ::
+          :camel_case
+          | :cobol_case
+          | :dot_case
+          | :flat_case
+          | :humanized_case
+          | :kebab_case
+          | :pascal_case
+          | :snake_case
+          | :train_case
+          | :upper_case_snake_case
+
   @doc """
   Converts a given `string` to the specified `target_case`.
 
@@ -22,11 +35,11 @@ defmodule Kase do
 
   """
 
-  @spec convert(String.t(), atom()) :: String.t()
+  @spec convert(String.t(), target_case()) :: String.t()
   def convert(string, target_case) when is_binary(string),
     do: Conversor.convert(string, target_case)
 
-  @spec convert(map(), atom(), Keyword.t()) :: map()
+  @spec convert(map(), target_case(), Keyword.t()) :: map()
   def convert(%{} = map, target_case, options \\ []) do
     to_atoms = Keyword.get(options, :to_atoms, false)
 

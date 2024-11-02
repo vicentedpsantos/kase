@@ -3,19 +3,6 @@ defmodule Kase.Conversor do
   A module for converting strings between different casing styles.
   """
 
-  @typedoc "The target case to convert the string to."
-  @type target_case ::
-          :camel_case
-          | :cobol_case
-          | :dot_case
-          | :flat_case
-          | :humanized_case
-          | :kebab_case
-          | :pascal_case
-          | :snake_case
-          | :train_case
-          | :upper_case_snake_case
-
   @doc """
   Converts a given `string` to the specified `target_case`.
 
@@ -63,7 +50,7 @@ defmodule Kase.Conversor do
 
   """
 
-  @spec convert(String.t() | map(), target_case()) :: String.t()
+  @spec convert(String.t() | map(), Kase.target_case()) :: String.t()
   def convert(string, target_case) when is_binary(string) do
     dot_cased_string = to_dot_case(string)
 
