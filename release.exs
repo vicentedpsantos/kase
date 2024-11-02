@@ -45,7 +45,7 @@ defmodule Release do
     create_git_commit_and_tag(new_version)
 
     IO.puts(
-      "\nIf everything's ok, push the changes. \n\n \"git push origin master && git push origin --tags\""
+      "\nIf everything's ok, push the changes. \n\n \"git push origin main && git push origin --tags\""
     )
   end
 

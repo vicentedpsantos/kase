@@ -43,9 +43,9 @@ defmodule Kase do
 
   ## Examples
 
-      map_input = %{"first_key" => "value", "second_key" => "value"}
+      map_input = %{"first_key" => "value", "second_key" => "value", "nested_value" => %{"inner_key" => "value"}}
       iex> Kase.convert(map_input, :camel_case)
-      %{"firstKey" => "value", "secondKey" => "value"}
+      %{"firstKey" => "value", "secondKey" => "value", "nestedValue" => %{"innerKey" => "value"}}
 
       map_input = %{"first_key" => "value", "second_key" => "value"}
       iex> Kase.convert(map_input, :camel_case, to_atoms: true)
@@ -60,10 +60,16 @@ defmodule Kase do
     |> Map.new(fn {key, value} ->
       new_key = Conversor.convert(to_string(key), target_case)
 
+      new_value =
+        case value do
+          %{} -> convert(value, target_case, options)
+          _ -> value
+        end
+
       if to_atoms do
-        {String.to_atom(new_key), value}
+        {String.to_atom(new_key), new_value}
       else
-        {new_key, value}
+        {new_key, new_value}
       end
     end)
   end
@@ -85,5 +91,21 @@ defmodule Kase do
   """
   def case_invariant_equal?(string1, string2) do
     Conversor.convert(string1, :dot_case) == Conversor.convert(string2, :dot_case)
+  end
+
+  @spec supported_casing_styles() :: [target_case()]
+  def supported_casing_styles do
+    [
+      :camel_case,
+      :cobol_case,
+      :dot_case,
+      :flat_case,
+      :humanized_case,
+      :kebab_case,
+      :pascal_case,
+      :snake_case,
+      :train_case,
+      :upper_case_snake_case
+    ]
   end
 end
