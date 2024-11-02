@@ -8,6 +8,7 @@ defmodule Kase.Conversor do
           :camel_case
           | :cobol_case
           | :dot_case
+          | :flat_case
           | :humanized_case
           | :kebab_case
           | :pascal_case
@@ -44,6 +45,19 @@ defmodule Kase.Conversor do
       iex> Kase.convert("exampleForDotCase", :dot_case)
       "example.for.dot.case"
 
+  ## Supported target cases
+
+  - `:camel_case`
+  - `:cobol_case`
+  - `:dot_case`
+  - `:flat_case`
+  - `:humanized_case`
+  - `:kebab_case`
+  - `:pascal_case`
+  - `:snake_case`
+  - `:train_case`
+  - `:upper_case_snake_case`
+
   """
 
   @spec convert(String.t() | map(), target_case()) :: String.t()
@@ -53,6 +67,7 @@ defmodule Kase.Conversor do
     case target_case do
       :camel_case -> from_dot_case_to_camel_case(dot_cased_string)
       :cobol_case -> from_dot_case_to_cobol_case(dot_cased_string)
+      :flat_case -> from_dot_case_to_flat_case(dot_cased_string)
       :humanized_case -> from_dot_case_to_humanized_case(dot_cased_string)
       :kebab_case -> from_dot_case_to_kebab_case(dot_cased_string)
       :pascal_case -> from_dot_case_to_pascal_case(dot_cased_string)
@@ -63,14 +78,6 @@ defmodule Kase.Conversor do
       :dot_case -> dot_cased_string
       _ -> string
     end
-  end
-
-  @spec to_dot_case(String.t()) :: String.t()
-  defp to_dot_case(string) do
-    string
-    |> split_words()
-    |> Enum.map(&String.downcase/1)
-    |> Enum.join(".")
   end
 
   @spec from_dot_case_to_camel_case(String.t()) :: String.t()
@@ -87,12 +94,28 @@ defmodule Kase.Conversor do
     |> Enum.join()
   end
 
-  @spec from_dot_case_to_snake_case(String.t()) :: String.t()
-  defp from_dot_case_to_snake_case(string) do
+  @spec from_dot_case_to_cobol_case(String.t()) :: String.t()
+  defp from_dot_case_to_cobol_case(string) do
+    string
+    |> String.split(".")
+    |> Enum.map(&String.upcase/1)
+    |> Enum.join("-")
+  end
+
+  @spec from_dot_case_to_flat_case(String.t()) :: String.t()
+  def from_dot_case_to_flat_case(string) do
+    string
+    |> String.split(".")
+    |> Enum.join("")
+  end
+
+  @spec from_dot_case_to_humanized_case(String.t()) :: String.t()
+  defp from_dot_case_to_humanized_case(string) do
     string
     |> String.split(".")
     |> Enum.map(&String.downcase/1)
-    |> Enum.join("_")
+    |> Enum.map(&String.capitalize/1)
+    |> Enum.join(" ")
   end
 
   @spec from_dot_case_to_kebab_case(String.t()) :: String.t()
@@ -111,11 +134,11 @@ defmodule Kase.Conversor do
     |> Enum.join()
   end
 
-  @spec from_dot_case_to_upper_case_snake_case(String.t()) :: String.t()
-  defp from_dot_case_to_upper_case_snake_case(string) do
+  @spec from_dot_case_to_snake_case(String.t()) :: String.t()
+  defp from_dot_case_to_snake_case(string) do
     string
     |> String.split(".")
-    |> Enum.map(&String.upcase/1)
+    |> Enum.map(&String.downcase/1)
     |> Enum.join("_")
   end
 
@@ -127,21 +150,20 @@ defmodule Kase.Conversor do
     |> Enum.join("-")
   end
 
-  @spec from_dot_case_to_cobol_case(String.t()) :: String.t()
-  defp from_dot_case_to_cobol_case(string) do
+  @spec from_dot_case_to_upper_case_snake_case(String.t()) :: String.t()
+  defp from_dot_case_to_upper_case_snake_case(string) do
     string
     |> String.split(".")
     |> Enum.map(&String.upcase/1)
-    |> Enum.join("-")
+    |> Enum.join("_")
   end
 
-  @spec from_dot_case_to_humanized_case(String.t()) :: String.t()
-  defp from_dot_case_to_humanized_case(string) do
+  @spec to_dot_case(String.t()) :: String.t()
+  defp to_dot_case(string) do
     string
-    |> String.split(".")
+    |> split_words()
     |> Enum.map(&String.downcase/1)
-    |> Enum.map(&String.capitalize/1)
-    |> Enum.join(" ")
+    |> Enum.join(".")
   end
 
   defp split_words(string) do
