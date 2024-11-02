@@ -1,6 +1,6 @@
 # Käse
 
-[![Kase Package](https://img.shields.io/hexpm/v/kase.svg)](https://hex.pm/packages/kase/1.1.1)
+[![Kase Package](https://img.shields.io/hexpm/v/kase.svg)](https://hex.pm/packages/kase/1.1.2)
 
 Käse is an Elixir library for converting strings between various casing styles, including
 camelCase, snake_case, kebab-case, PascalCase, and more. Whether you're working with data from
@@ -14,7 +14,7 @@ To use Käse in your Elixir project, add it to your `mix.exs` file:
 ```elixir
 defp deps do
   [
-    {:kase, "~> 1.1.1"}
+    {:kase, "~> 1.1.2"}
   ]
 end
 ```
