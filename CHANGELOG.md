@@ -9,16 +9,23 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## **1.1.0** - 2024-11-02
 
+### Added
+
+- Add `Kase.Plug.ConvertKeys`.
+
 ## **1.0.0** - 2024-11-02
 
-## **0.3.0** - 2024-11-02
+### Added
 
-## [0.2.0] - 2024-10-11
+- Add `Kase.case_invariant_equal?/2`.
+- Add `Kase.convert/2` for lists.
+
+## 0.2.0 - 2024-10-11
 
 ### Changed
+
 - Update README.
 - Add CHANGELOG.md.
-- Support converting map keys.
 
 ### Added
 
