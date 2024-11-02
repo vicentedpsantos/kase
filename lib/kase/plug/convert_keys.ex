@@ -85,7 +85,6 @@ defmodule Kase.Plug.ConvertKeys do
   Initializes the plug.
   """
   def init(opts) do
-    IO.inspect("dentro do init")
     opts
   end
 
@@ -93,7 +92,6 @@ defmodule Kase.Plug.ConvertKeys do
   Converts the keys of the request body to the desired casing style.
   """
   def call(conn, opts \\ []) do
-    IO.inspect("WTF")
     request_casing = Keyword.get(opts, :request_casing, @default_casing)
     response_casing = Keyword.get(opts, :response_casing, @default_casing)
 
