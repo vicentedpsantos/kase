@@ -26,19 +26,32 @@ defmodule Kase do
       iex> Kase.convert("this-variable-name", :camel_case)
       "thisVariableName"
 
-      iex> Kase.convert("ThisIsPascalCase", :snake_case)
-      "this_is_pascal_case"
+      iex> Kase.convert(["kool-aid, "royalCrown"], :snake_case)
+      ["kool_aid", "royal_crown"]
+
+  """
+
+  @spec convert(String.t() | [String.t()], target_case()) :: String.t()
+  def convert(list, target_case) when is_list(list),
+    do: Enum.map(list, &Conversor.convert(&1, target_case))
+
+  def convert(string, target_case) when is_binary(string),
+    do: Conversor.convert(string, target_case)
+
+  @doc """
+  Converts the keys of a given `map` to the specified `target_case`.
+
+  ## Examples
 
       map_input = %{"first_key" => "value", "second_key" => "value"}
       iex> Kase.convert(map_input, :camel_case)
       %{"firstKey" => "value", "secondKey" => "value"}
 
+      map_input = %{"first_key" => "value", "second_key" => "value"}
+      iex> Kase.convert(map_input, :camel_case, to_atoms: true)
+      %{"firstKey": "value", "secondKey": "value"}
+
   """
-
-  @spec convert(String.t(), target_case()) :: String.t()
-  def convert(string, target_case) when is_binary(string),
-    do: Conversor.convert(string, target_case)
-
   @spec convert(map(), target_case(), Keyword.t()) :: map()
   def convert(%{} = map, target_case, options \\ []) do
     to_atoms = Keyword.get(options, :to_atoms, false)
@@ -53,5 +66,24 @@ defmodule Kase do
         {new_key, value}
       end
     end)
+  end
+
+  @doc """
+  Compares two strings for equality, ignoring casing differences.
+
+  ## Examples
+
+      iex> Kase.case_invariant_equal?("helloWorld", "hello_world")
+      true
+
+      iex> Kase.case_invariant_equal?("fooBar", "FOO_BAR")
+      true
+
+      iex> Kase.case_invariant_equal?("KaseLib", "case_lib")
+      false
+
+  """
+  def case_invariant_equal?(string1, string2) do
+    Conversor.convert(string1, :dot_case) == Conversor.convert(string2, :dot_case)
   end
 end
