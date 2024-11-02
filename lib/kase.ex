@@ -55,16 +55,16 @@ defmodule Kase do
 
   The following casing styles are supported:
 
-      - `:camel_case` - camelCase
-      - `:cobol_case` - COBOL-CASE
-      - `:dot_case` - dot.case
-      - `:flat_case` - flatcase
-      - `:humanized_case` - Humanized case
-      - `:kebab_case` - kebab-case
-      - `:pascal_case` - PascalCase
-      - `:snake_case` - snake_case
-      - `:train_case` - Train-Case
-      - `:upper_case_snake_case` - UPPER_CASE_SNAKE_CASE
+    - :camel_case - camelCase
+    - :cobol_case - COBOL-CASE
+    - :dot_case - dot.case
+    - :flat_case - flatcase
+    - :humanized_case - Humanized case
+    - :kebab_case - kebab-case
+    - :pascal_case - PascalCase
+    - :snake_case - snake_case
+    - :train_case - Train-Case
+    - :upper_case_snake_case - UPPER_CASE_SNAKE_CASE
 
   For any custom conversions or additional casing styles, the `Kase.Conversor`
   module can be extended to handle these cases.
@@ -157,6 +157,7 @@ defmodule Kase do
       false
 
   """
+  @spec case_invariant_equal?(String.t(), String.t()) :: boolean()
   def case_invariant_equal?(string1, string2) do
     Conversor.convert(string1, :dot_case) == Conversor.convert(string2, :dot_case)
   end

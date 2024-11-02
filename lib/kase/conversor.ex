@@ -93,7 +93,7 @@ defmodule Kase.Conversor do
   end
 
   @spec from_dot_case_to_flat_case(String.t()) :: String.t()
-  def from_dot_case_to_flat_case(string) do
+  defp from_dot_case_to_flat_case(string) do
     string
     |> String.split(".")
     |> Enum.join("")

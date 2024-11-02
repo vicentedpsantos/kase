@@ -78,12 +78,15 @@ defmodule Kase.Plug.ConvertKeys do
 
   import Plug.Conn
 
+  @behaviour Plug
+
   @default_casing :snake_case
   @supported_casing_styles Kase.supported_casing_styles()
 
   @doc """
   Initializes the plug.
   """
+  @impl true
   def init(opts) do
     opts
   end
@@ -91,6 +94,7 @@ defmodule Kase.Plug.ConvertKeys do
   @doc """
   Converts the keys of the request body to the desired casing style.
   """
+  @impl true
   def call(conn, opts \\ []) do
     request_casing = Keyword.get(opts, :request_casing, @default_casing)
     response_casing = Keyword.get(opts, :response_casing, @default_casing)
@@ -101,6 +105,7 @@ defmodule Kase.Plug.ConvertKeys do
   end
 
   # Convert keys in incoming JSON requests
+  @spec convert_request_keys(Plug.Conn.t(), atom()) :: Plug.Conn.t()
   defp convert_request_keys(%{params: params} = conn, request_casing)
        when request_casing in @supported_casing_styles do
     converted_params = Kase.convert(params, request_casing)
@@ -109,6 +114,7 @@ defmodule Kase.Plug.ConvertKeys do
 
   defp convert_request_keys(conn, _request_casing), do: conn
 
+  @spec convert_response_keys(Plug.Conn.t(), atom()) :: Plug.Conn.t()
   defp convert_response_keys(%{resp_body: body, resp_headers: headers} = conn, response_casing)
        when response_casing in @supported_casing_styles do
     if json_response?(headers) do
@@ -127,6 +133,7 @@ defmodule Kase.Plug.ConvertKeys do
 
   defp convert_response_keys(conn, _response_casing), do: conn
 
+  @spec json_response?(map()) :: boolean()
   defp json_response?(headers) do
     headers
     |> Enum.any?(fn {key, value} ->
